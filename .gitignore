@@ -1,0 +1,52 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Next.js
+.next/
+out/
+.vercel/
+.vercel/output/
+
+# Build outputs
+dist/
+build/
+coverage/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Local research and source material not needed for deploy
+assets/
+research/
+Screenshot_*.jpg
+Screenshot_*.png
+
+# Earlier static prototype; production app is Next.js at repo root
+site/
+
+# Cloudflare / Wrangler local state
+.wrangler/
+.dev.vars
+
+# Netlify local state
+.netlify/
