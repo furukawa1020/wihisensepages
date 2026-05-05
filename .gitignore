@@ -36,8 +36,8 @@ desktop.ini
 *.swo
 
 # Local research and source material not needed for deploy
-assets/
-research/
+/assets/
+/research/
 Screenshot_*.jpg
 Screenshot_*.png
 
