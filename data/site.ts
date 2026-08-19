@@ -1,82 +1,197 @@
 import {
   BookOpen,
-  Building2,
-  CalendarDays,
   Handshake,
   HeartHandshake,
   Instagram,
-  Lightbulb,
   Mail,
-  MapPin,
   Megaphone,
   MessageCircle,
   Moon,
-  Sparkles,
 } from "lucide-react";
 
 export const navItems = [
   { label: "私たちについて", href: "#about" },
   { label: "活動", href: "#activities" },
+  { label: "プロジェクト", href: "#projects" },
   { label: "実績", href: "#reports" },
-  { label: "連絡先", href: "#contact" },
+  { label: "関わり方", href: "#join" },
+  { label: "お問い合わせ", href: "#contact" },
 ];
 
 export const pillars = [
   {
+    number: "01",
     icon: Megaphone,
     title: "感覚の多様性に関する啓発・発信",
-    body: "イベントの開催やInstagramを通した発信により、多様な感覚について知る人を増やす啓発活動を行っております。",
+    body: "イベントやInstagramでの発信を通じて、多様な感覚特性について知る人を増やす活動を行っています。",
   },
   {
+    number: "02",
     icon: Moon,
     title: "金大センサリールームプロジェクト",
-    body: "感覚刺激によって疲れやストレスを感じやすい人が安心して過ごすことができる大学を目指し、金沢大学内にセンサリールームをつくるプロジェクトです。",
+    body: "感覚刺激による疲れやストレスを感じやすい人が、大学内で安心して休める環境づくりに取り組んでいます。",
   },
   {
+    number: "03",
     icon: HeartHandshake,
     title: "感覚にやさしいコミュニティづくり",
-    body: "感覚に関する困りごとをもつ人々の孤独感や孤立感を軽減するための心理的居場所を作ることを目標として、交流イベントを開催しています。",
+    body: "困りごとをもつ人の孤独感や孤立感を軽減し、安心してつながれる心理的な居場所をひらいています。",
   },
-];
-
-export const sensoryExamples = [
-  "照明がまぶしすぎる",
-  "大きな音や賑やかな場所でとても緊張してしまう",
-  "香水や食べ物のにおいで気分が悪くなりやすい",
-  "服のタグや素材がチクチクする",
 ];
 
 export const metrics = [
-  { value: "2024.7", label: "設立" },
-  { value: "6", label: "金沢大学の学生で活動" },
-  { value: "3", label: "主な活動の柱" },
-  { value: "4", label: "Sensory Book Lounge開催実績" },
+  { value: "2024年7月", label: "設立" },
+  { value: "6名", label: "金沢大学の学生を中心に活動" },
+  { value: "3つ", label: "活動の柱" },
+  { value: "4会場", label: "Sensory Book Lounge実施" },
 ];
 
-export const reports = [
+export const loungeReports = [
   {
-    date: "2025年8月19日(火)",
-    title: "Sensory Book Lounge @コトノハ",
-    place: "Community & Library コトノハ さま",
-    image: "/assets/flyer-machinaka-1.png",
+    date: "2025.08.19",
+    title: "Community & Library コトノハ",
+    place: "金沢市石引",
+    image: "/assets/ppt/lounge-kotonoha.png",
   },
   {
-    date: "2025年9月20日(土)",
-    title: "Sensory Book Lounge @金沢学生のまち市民交流館",
-    place: "金沢学生のまち市民交流館 さま",
-    image: "/assets/flyer-machinaka-1.png",
+    date: "2025.09.20",
+    title: "金沢学生のまち市民交流館",
+    place: "金沢市片町",
+    image: "/assets/ppt/lounge-machinaka.png",
   },
   {
-    date: "2025年11月1日(土)、2日(日)",
-    title: "Sensory Book Lounge @金大祭 2025",
+    date: "2025.11.01–02",
+    title: "金大祭2025",
     place: "金沢大学角間キャンパス",
-    image: "/assets/litlink-image-3.png",
+    image: "/assets/ppt/lounge-kinda-festival.jpg",
   },
   {
-    date: "2025年12月21日(日)",
-    title: "Sensory Book Lounge @石川県立図書館",
-    place: "石川県立図書館 さま",
-    image: "/assets/flyer-ishikawa-library-1.png",
+    date: "2025.12.21",
+    title: "石川県立図書館",
+    place: "石川県金沢市",
+    image: "/assets/ppt/lounge-library.png",
+  },
+];
+
+export const awarenessEvents = [
+  {
+    year: "2024",
+    date: "10.17",
+    title: "感覚の多様性を知る会",
+    note: "金沢大学・地域創造カフェイベント",
+  },
+  {
+    year: "2024",
+    date: "11.02–03",
+    title: "お疲れのあなたへ ～感覚にやさしいリフレッシュ～",
+    note: "金大祭2024",
+  },
+  {
+    year: "2025",
+    date: "01.24",
+    title: "あなたと私の感覚の世界",
+    note: "金沢大学・バリアフリーワークショップ協力",
+  },
+  {
+    year: "2025",
+    date: "04.25",
+    title: "五感でリフレッシュ！センサリートイdeゆるっと交流会",
+    note: "金沢大学",
+  },
+  {
+    year: "2025",
+    date: "07.02・04",
+    title: "静かふぇ",
+    note: "金沢大学・e-swapコラボイベント",
+  },
+  {
+    year: "2025",
+    date: "08.19",
+    title: "Sensory Book Lounge @ Community & Library コトノハ",
+    note: "金沢市石引",
+  },
+  {
+    year: "2025",
+    date: "09.20",
+    title: "Sensory Book Lounge @ 金沢学生のまち市民交流館",
+    note: "金沢市片町",
+  },
+  {
+    year: "2025",
+    date: "10.05",
+    title: "KANAZAWA PRIDE PARADE 2025",
+    note: "展示ブース出展",
+  },
+  {
+    year: "2025",
+    date: "11.01–02",
+    title: "Sensory Book Lounge @ 金大祭2025",
+    note: "学祭企画出展",
+  },
+  {
+    year: "2025",
+    date: "12.21",
+    title: "Sensory Book Lounge @ 石川県立図書館",
+    note: "石川県立図書館",
+  },
+];
+
+export const communityEvents = [
+  {
+    date: "2025.03.25",
+    title: "先輩当事者に聞いてみよう！触覚過敏や発達特性による困りごと",
+    note: "オンライン・fukufuku312コラボイベント",
+  },
+  {
+    date: "2025.04.25",
+    title: "五感でリフレッシュ！センサリートイdeゆるっと交流会",
+    note: "金沢大学",
+  },
+  {
+    date: "2025.07.02・04",
+    title: "服と感覚のトークルーム",
+    note: "静かふぇ内企画・e-swapコラボイベント",
+  },
+];
+
+export const involvementOptions = [
+  {
+    label: "コアメンバー",
+    title: "企画や運営の中心として関わりたい",
+  },
+  {
+    label: "サポートメンバー",
+    title: "得意を活かして部分的に参加したい",
+  },
+  {
+    label: "スポット参加メンバー",
+    title: "イベント当日だけ運営に参加したい",
+  },
+  {
+    label: "お知らせグループメンバー",
+    title: "まずは情報を受け取り、コミュニティに入りたい",
+  },
+  {
+    label: "お休みメンバー",
+    title: "就活・留学・療養などで一定期間活動を休みたい",
+  },
+];
+
+export const joinSteps = [
+  {
+    step: "STEP 0",
+    title: "お知らせグループに参加",
+    body: "イベントや活動参加に関する情報を受け取れます。参加方法はInstagram等でご案内します。",
+  },
+  {
+    step: "STEP 1",
+    title: "新メンバー応募フォームから応募",
+    body: "興味・関心や希望する関わり方などを入力します。",
+  },
+  {
+    step: "STEP 2",
+    title: "カジュアル面談",
+    body: "フォームの内容をもとに、対面またはオンラインで30分程度お話しします。",
   },
 ];
 
@@ -84,44 +199,38 @@ export const contactLinks = [
   {
     icon: Instagram,
     label: "Instagram",
-    detail: "@ku_withsense",
+    detail: "最新情報・イベント案内",
     href: "https://www.instagram.com/ku_withsense?igsh=MWFyb2gwcTRrYm5jZg==",
   },
   {
     icon: Mail,
-    label: "Gmail",
+    label: "Email",
     detail: "ku.withsense@gmail.com",
     href: "mailto:ku.withsense@gmail.com",
   },
   {
     icon: MessageCircle,
-    label: "参加案内",
-    detail: "イベントごとにInstagram等でご案内します",
-    href: "https://lit.link/ku_withsense",
-  },
-];
-
-export const collaborationPoints = [
-  {
-    icon: Lightbulb,
-    title: "照明・音量の調整",
-    body: "照明を落とす、BGMの音量を下げるなど、空間の刺激を少し整えるところから始めます。",
-  },
-  {
-    icon: BookOpen,
-    title: "本と展示",
-    body: "感覚の多様性やバリアフリーに関する書籍・ポスターを通じて、学びの入口をつくります。",
+    label: "参加について",
+    detail: "関わり方と加入の流れを見る",
+    href: "#join",
   },
   {
     icon: Handshake,
-    title: "施設・店舗との協働",
-    body: "金沢市内の店舗や施設と協力し、安心して滞在・交流ができる居場所の選択肢を広げます。",
+    label: "連携・協働について",
+    detail: "施設・団体・授業等のご相談",
+    href: "mailto:ku.withsense@gmail.com?subject=With%20Senseとの連携・協働について",
   },
 ];
 
-export const projectFacts = [
-  { icon: CalendarDays, label: "整備時期", value: "2025年1月" },
-  { icon: Building2, label: "場所", value: "金沢大学自然科学系図書館 研究個室" },
-  { icon: Sparkles, label: "整備内容", value: "遮光カーテン・調光ライト・カーペット床" },
-  { icon: MapPin, label: "連携", value: "大学教職員・学内組織・ダイバーシティ推進機構" },
+export const loungeActivities = [
+  {
+    icon: Moon,
+    title: "感覚にやさしい空間",
+    body: "照明や音などの刺激に配慮し、読書・作業・カームダウン・休憩・交流に使える空間をつくります。",
+  },
+  {
+    icon: BookOpen,
+    title: "感覚の多様性を学べる企画",
+    body: "ミニ講座、VRによる感覚過敏の追体験、センサリーアイテム展示、センサリートイ制作などを行います。",
+  },
 ];
