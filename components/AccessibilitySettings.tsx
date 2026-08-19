@@ -10,9 +10,10 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import type { Locale } from "@/data/site";
 
 export const ACCESSIBILITY_STORAGE_KEY =
-  "with-sense-accessibility-preferences-v1";
+  "with-sense-accessibility-preferences-v2";
 
 type ColorTheme = "standard" | "contrast" | "dark";
 type FontMode = "standard" | "readable";
@@ -35,27 +36,87 @@ const defaultPreferences: AccessibilityPreferences = {
   fontMode: "standard",
   fontScale: 100,
   letterSpacing: 0,
-  lineHeight: 185,
+  lineHeight: 175,
   photoMode: "standard",
   reduceMotion: false,
 };
 
-const colorThemes: Array<{ label: string; value: ColorTheme }> = [
-  { label: "標準", value: "standard" },
-  { label: "高コントラスト", value: "contrast" },
-  { label: "ダーク", value: "dark" },
-];
+const colorThemeValues: ColorTheme[] = ["standard", "contrast", "dark"];
+const fontModeValues: FontMode[] = ["standard", "readable"];
+const photoModeValues: PhotoMode[] = ["standard", "calm", "hidden"];
 
-const fontModes: Array<{ label: string; value: FontMode }> = [
-  { label: "標準", value: "standard" },
-  { label: "UDゴシック", value: "readable" },
-];
-
-const photoModes: Array<{ label: string; value: PhotoMode }> = [
-  { label: "標準", value: "standard" },
-  { label: "低刺激", value: "calm" },
-  { label: "非表示", value: "hidden" },
-];
+const accessibilityCopy = {
+  ja: {
+    open: "表示を調整する",
+    title: "表示の調整",
+    close: "表示設定を閉じる",
+    closeTitle: "閉じる",
+    text: "文字",
+    fontSize: "文字サイズ",
+    lineHeight: "行間",
+    letterSpacing: "文字間隔",
+    standard: "標準",
+    wide: "広い",
+    typeface: "字体",
+    fonts: [
+      { label: "BIZ UDPゴシック", value: "standard" as const },
+      { label: "Noto Sans", value: "readable" as const },
+    ],
+    color: "配色",
+    colorMode: "カラーモード",
+    colors: [
+      { label: "標準", value: "standard" as const },
+      { label: "高コントラスト", value: "contrast" as const },
+      { label: "ダーク", value: "dark" as const },
+    ],
+    underline: "リンクに下線を表示",
+    stimulus: "刺激",
+    photosLabel: "写真",
+    photos: [
+      { label: "標準", value: "standard" as const },
+      { label: "低刺激", value: "calm" as const },
+      { label: "非表示", value: "hidden" as const },
+    ],
+    motion: "動きを減らす",
+    saved: "設定はこの端末に保存されます",
+    reset: "標準に戻す",
+  },
+  en: {
+    open: "Adjust display",
+    title: "Display settings",
+    close: "Close display settings",
+    closeTitle: "Close",
+    text: "Text",
+    fontSize: "Text size",
+    lineHeight: "Line spacing",
+    letterSpacing: "Letter spacing",
+    standard: "Standard",
+    wide: "Wide",
+    typeface: "Typeface",
+    fonts: [
+      { label: "BIZ UDP Gothic", value: "standard" as const },
+      { label: "Noto Sans", value: "readable" as const },
+    ],
+    color: "Colour",
+    colorMode: "Colour mode",
+    colors: [
+      { label: "Standard", value: "standard" as const },
+      { label: "High contrast", value: "contrast" as const },
+      { label: "Dark", value: "dark" as const },
+    ],
+    underline: "Underline links",
+    stimulus: "Sensory load",
+    photosLabel: "Photos",
+    photos: [
+      { label: "Standard", value: "standard" as const },
+      { label: "Low stimulus", value: "calm" as const },
+      { label: "Hidden", value: "hidden" as const },
+    ],
+    motion: "Reduce motion",
+    saved: "Settings are saved on this device",
+    reset: "Reset",
+  },
+} as const;
 
 function numberInRange(value: unknown, min: number, max: number, fallback: number) {
   return typeof value === "number" && Number.isFinite(value)
@@ -69,15 +130,13 @@ function normalizePreferences(value: unknown): AccessibilityPreferences {
   }
 
   const candidate = value as Partial<AccessibilityPreferences>;
-  const colorTheme = colorThemes.some(
-    (theme) => theme.value === candidate.colorTheme,
-  )
+  const colorTheme = colorThemeValues.includes(candidate.colorTheme as ColorTheme)
     ? (candidate.colorTheme as ColorTheme)
     : defaultPreferences.colorTheme;
-  const fontMode = fontModes.some((font) => font.value === candidate.fontMode)
+  const fontMode = fontModeValues.includes(candidate.fontMode as FontMode)
     ? (candidate.fontMode as FontMode)
     : defaultPreferences.fontMode;
-  const photoMode = photoModes.some((mode) => mode.value === candidate.photoMode)
+  const photoMode = photoModeValues.includes(candidate.photoMode as PhotoMode)
     ? (candidate.photoMode as PhotoMode)
     : defaultPreferences.photoMode;
 
@@ -87,7 +146,7 @@ function normalizePreferences(value: unknown): AccessibilityPreferences {
     fontMode,
     fontScale: numberInRange(candidate.fontScale, 100, 200, 100),
     letterSpacing: numberInRange(candidate.letterSpacing, 0, 12, 0),
-    lineHeight: numberInRange(candidate.lineHeight, 150, 220, 185),
+    lineHeight: numberInRange(candidate.lineHeight, 150, 220, 175),
     photoMode,
     reduceMotion: candidate.reduceMotion === true,
   };
@@ -113,8 +172,9 @@ function applyPreferences(preferences: AccessibilityPreferences) {
   root.dataset.largeText = String(preferences.fontScale >= 125);
 }
 
-export function AccessibilitySettings() {
+export function AccessibilitySettings({ locale }: { locale: Locale }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const copy = accessibilityCopy[locale];
   const [isOpen, setIsOpen] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const [preferences, setPreferences] =
@@ -132,9 +192,13 @@ export function AccessibilitySettings() {
       storedPreferences = defaultPreferences;
     }
 
-    setPreferences(storedPreferences);
-    applyPreferences(storedPreferences);
-    setIsReady(true);
+    const timer = window.setTimeout(() => {
+      setPreferences(storedPreferences);
+      applyPreferences(storedPreferences);
+      setIsReady(true);
+    }, 0);
+
+    return () => window.clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -179,11 +243,11 @@ export function AccessibilitySettings() {
       <button
         className="accessibility-trigger"
         type="button"
-        aria-label="表示を調整する"
+        aria-label={copy.open}
         aria-haspopup="dialog"
         aria-expanded={isOpen}
         aria-controls="accessibility-dialog"
-        title="表示を調整する"
+        title={copy.open}
         onClick={openDialog}
       >
         <Accessibility aria-hidden="true" size={25} strokeWidth={1.8} />
@@ -206,13 +270,13 @@ export function AccessibilitySettings() {
           <header className="accessibility-panel-header">
             <div>
               <Accessibility aria-hidden="true" size={28} />
-              <h2 id="accessibility-title">表示の調整</h2>
+              <h2 id="accessibility-title">{copy.title}</h2>
             </div>
             <button
               className="icon-button"
               type="button"
-              aria-label="表示設定を閉じる"
-              title="閉じる"
+              aria-label={copy.close}
+              title={copy.closeTitle}
               onClick={closeDialog}
             >
               <X aria-hidden="true" size={22} />
@@ -223,12 +287,12 @@ export function AccessibilitySettings() {
             <section className="setting-group" aria-labelledby="text-settings">
               <div className="setting-group-heading">
                 <Eye aria-hidden="true" size={20} />
-                <h3 id="text-settings">文字</h3>
+                <h3 id="text-settings">{copy.text}</h3>
               </div>
 
               <div className="range-setting">
                 <div className="setting-label">
-                  <label htmlFor="font-scale">文字サイズ</label>
+                  <label htmlFor="font-scale">{copy.fontSize}</label>
                   <output htmlFor="font-scale">{preferences.fontScale}%</output>
                 </div>
                 <input
@@ -250,7 +314,7 @@ export function AccessibilitySettings() {
 
               <div className="range-setting">
                 <div className="setting-label">
-                  <label htmlFor="line-height">行間</label>
+                  <label htmlFor="line-height">{copy.lineHeight}</label>
                   <output htmlFor="line-height">{preferences.lineHeight}%</output>
                 </div>
                 <input
@@ -272,10 +336,10 @@ export function AccessibilitySettings() {
 
               <div className="range-setting">
                 <div className="setting-label">
-                  <label htmlFor="letter-spacing">文字間隔</label>
+                  <label htmlFor="letter-spacing">{copy.letterSpacing}</label>
                   <output htmlFor="letter-spacing">
                     {preferences.letterSpacing === 0
-                      ? "標準"
+                      ? copy.standard
                       : `+${preferences.letterSpacing}%`}
                   </output>
                 </div>
@@ -291,15 +355,15 @@ export function AccessibilitySettings() {
                   }
                 />
                 <div className="range-ends" aria-hidden="true">
-                  <span>標準</span>
-                  <span>広い</span>
+                  <span>{copy.standard}</span>
+                  <span>{copy.wide}</span>
                 </div>
               </div>
 
               <fieldset className="choice-setting">
-                <legend>字体</legend>
+                <legend>{copy.typeface}</legend>
                 <div className="segmented-control two-options">
-                  {fontModes.map((font) => (
+                  {copy.fonts.map((font) => (
                     <label key={font.value}>
                       <input
                         type="radio"
@@ -318,13 +382,13 @@ export function AccessibilitySettings() {
             <section className="setting-group" aria-labelledby="color-settings">
               <div className="setting-group-heading">
                 <Contrast aria-hidden="true" size={20} />
-                <h3 id="color-settings">配色</h3>
+                <h3 id="color-settings">{copy.color}</h3>
               </div>
 
               <fieldset className="choice-setting">
-                <legend>カラーモード</legend>
+                <legend>{copy.colorMode}</legend>
                 <div className="segmented-control three-options">
-                  {colorThemes.map((theme) => (
+                  {copy.colors.map((theme) => (
                     <label key={theme.value}>
                       <input
                         type="radio"
@@ -344,7 +408,7 @@ export function AccessibilitySettings() {
               <label className="toggle-setting">
                 <span>
                   <LinkIcon aria-hidden="true" size={19} />
-                  リンクに下線を表示
+                  {copy.underline}
                 </span>
                 <input
                   type="checkbox"
@@ -359,13 +423,13 @@ export function AccessibilitySettings() {
             <section className="setting-group" aria-labelledby="sensory-settings">
               <div className="setting-group-heading">
                 <ImageOff aria-hidden="true" size={20} />
-                <h3 id="sensory-settings">刺激</h3>
+                <h3 id="sensory-settings">{copy.stimulus}</h3>
               </div>
 
               <fieldset className="choice-setting">
-                <legend>写真</legend>
+                <legend>{copy.photosLabel}</legend>
                 <div className="segmented-control three-options">
-                  {photoModes.map((mode) => (
+                  {copy.photos.map((mode) => (
                     <label key={mode.value}>
                       <input
                         type="radio"
@@ -381,7 +445,7 @@ export function AccessibilitySettings() {
               </fieldset>
 
               <label className="toggle-setting">
-                <span>動きを減らす</span>
+                <span>{copy.motion}</span>
                 <input
                   type="checkbox"
                   checked={preferences.reduceMotion}
@@ -394,14 +458,14 @@ export function AccessibilitySettings() {
           </div>
 
           <footer className="accessibility-panel-footer">
-            <p>設定はこの端末に保存されます</p>
+            <p>{copy.saved}</p>
             <button
               className="reset-button"
               type="button"
               onClick={resetPreferences}
             >
               <RotateCcw aria-hidden="true" size={17} />
-              標準に戻す
+              {copy.reset}
             </button>
           </footer>
         </div>

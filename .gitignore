@@ -8,6 +8,8 @@ node_modules/
 out/
 .vercel/
 .vercel/output/
+.open-next/
+cloudflare-env.d.ts
 
 # Build outputs
 dist/
@@ -40,6 +42,8 @@ desktop.ini
 /research/
 Screenshot_*.jpg
 Screenshot_*.png
+accessibility-*.png
+guidebook-*.png
 
 # Earlier static prototype; production app is Next.js at repo root
 site/

@@ -1,18 +1,23 @@
 "use client";
 
 import Image from "next/image";
-import { Menu, X } from "lucide-react";
+import { Languages, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { AccessibilitySettings } from "@/components/AccessibilitySettings";
-import { navItems } from "@/data/site";
+import { getSiteContent, type Locale } from "@/data/site";
 
-export function SiteHeader() {
+type SiteHeaderProps = {
+  locale: Locale;
+};
+
+export function SiteHeader({ locale }: SiteHeaderProps) {
   const [open, setOpen] = useState(false);
+  const content = getSiteContent(locale);
 
   return (
     <header className="site-header">
       <div className="header-inner">
-        <a className="brand" href="#top" aria-label="With Sense トップへ">
+        <a className="brand" href="#top" aria-label="With Sense">
           <Image
             src="/assets/logo-circle.png"
             alt=""
@@ -23,20 +28,26 @@ export function SiteHeader() {
           <span>With Sense</span>
         </a>
 
-        <nav className="desktop-nav" aria-label="サイト内ナビゲーション">
-          {navItems.map((item) => (
-            <a key={item.href} href={item.href}>
-              {item.label}
+        <nav className="desktop-nav" aria-label={content.navLabel}>
+          {content.nav.map(([label, href]) => (
+            <a key={href} href={href}>
+              {label}
             </a>
           ))}
         </nav>
 
         <div className="header-controls">
-          <AccessibilitySettings />
+          <div className="language-switch" aria-label={content.language.label}>
+            <Languages aria-hidden="true" size={18} />
+            <span aria-current="page">{content.language.current}</span>
+            <span aria-hidden="true">/</span>
+            <a href={content.language.otherHref}>{content.language.other}</a>
+          </div>
+          <AccessibilitySettings locale={locale} />
           <button
             className="menu-button"
             type="button"
-            aria-label={open ? "メニューを閉じる" : "メニューを開く"}
+            aria-label={open ? content.menuClose : content.menuOpen}
             aria-expanded={open}
             aria-controls="mobile-navigation"
             onClick={() => setOpen((current) => !current)}
@@ -49,11 +60,11 @@ export function SiteHeader() {
       <nav
         id="mobile-navigation"
         className={"mobile-nav" + (open ? " is-open" : "")}
-        aria-label="モバイルナビゲーション"
+        aria-label={content.navLabel}
       >
-        {navItems.map((item) => (
-          <a key={item.href} href={item.href} onClick={() => setOpen(false)}>
-            {item.label}
+        {content.nav.map(([label, href]) => (
+          <a key={href} href={href} onClick={() => setOpen(false)}>
+            {label}
           </a>
         ))}
       </nav>
