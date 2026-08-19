@@ -44,6 +44,7 @@ Screenshot_*.jpg
 Screenshot_*.png
 accessibility-*.png
 guidebook-*.png
+report-*.png
 
 # Earlier static prototype; production app is Next.js at repo root
 site/

@@ -127,6 +127,10 @@ dd {
   overflow-wrap: anywhere;
 }
 
+figure {
+  margin: 0;
+}
+
 .container {
   width: min(calc(100% - 48px), var(--max-width));
   margin-inline: auto;
@@ -560,9 +564,11 @@ dd {
 }
 
 .hero h1 {
+  min-width: 0;
   margin: 0;
   font-size: 3.5rem;
   font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
 .hero-lead {
@@ -1019,6 +1025,11 @@ dd {
 .report-row h3 {
   margin-bottom: 4px;
   font-size: 1.125rem;
+  overflow-wrap: anywhere;
+}
+
+.report-row > div {
+  min-width: 0;
 }
 
 .report-row p {
@@ -1494,19 +1505,23 @@ dd {
   }
 
   .report-row {
-    min-height: 112px;
-    grid-template-columns: 112px minmax(0, 1fr);
-    gap: 16px;
+    min-height: 0;
+    align-items: start;
+    padding: 24px 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
   }
 
   .report-image {
-    width: 112px;
-    height: 84px;
-    grid-row: 1 / 3;
+    width: min(100%, 360px);
+    height: auto;
+    margin-bottom: 8px;
+    aspect-ratio: 4 / 3;
+    grid-row: auto;
   }
 
   .report-row time {
-    align-self: end;
+    align-self: start;
   }
 
   .guidebook-row {
