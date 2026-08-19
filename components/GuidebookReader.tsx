@@ -23,6 +23,63 @@ const PAGE_IMAGES = Array.from(
     String(index + 1).padStart(2, "0") +
     ".jpg",
 );
+const HD_PAGE_IMAGES = Array.from(
+  { length: PAGE_COUNT },
+  (_, index) =>
+    "/assets/guidebook/pages-hd/page-" +
+    String(index + 1).padStart(2, "0") +
+    ".webp",
+);
+const ULTRA_PAGE_IMAGES = Array.from(
+  { length: PAGE_COUNT },
+  (_, index) =>
+    "/assets/guidebook/pages-ultra/page-" +
+    String(index + 1).padStart(2, "0") +
+    ".webp",
+);
+
+function createInteractivePage(index: number) {
+  const page = document.createElement("div");
+  const picture = document.createElement("picture");
+  const source = document.createElement("source");
+  const image = document.createElement("img");
+
+  page.className = "book-page";
+  if (index === 0 || index === PAGE_COUNT - 1) {
+    page.dataset.density = "hard";
+  }
+
+  source.type = "image/webp";
+  source.srcset =
+    `${HD_PAGE_IMAGES[index]} 1820w, ` +
+    `${ULTRA_PAGE_IMAGES[index]} 2730w`;
+  source.sizes = "(max-width: 700px) calc(100vw - 20px), 600px";
+
+  image.src = PAGE_IMAGES[index];
+  image.alt = "";
+  image.width = 2730;
+  image.height = 3859;
+  image.decoding = "async";
+  image.loading = index < 4 ? "eager" : "lazy";
+  image.fetchPriority = index < 2 ? "high" : "auto";
+
+  picture.append(source, image);
+  page.append(picture);
+  return page;
+}
+
+function warmPageWindow(pages: HTMLElement[], center: number) {
+  const first = Math.max(0, center - 1);
+  const last = Math.min(PAGE_COUNT - 1, center + 4);
+
+  for (let index = first; index <= last; index += 1) {
+    const image = pages[index]?.querySelector("img");
+    if (image) {
+      image.loading = "eager";
+      void image.decode().catch(() => undefined);
+    }
+  }
+}
 
 const readerCopy = {
   ja: {
@@ -65,8 +122,10 @@ export function GuidebookReader({
   const hostRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const pageFlipRef = useRef<PageFlip | null>(null);
+  const bookPagesRef = useRef<HTMLElement[]>([]);
   const currentPageRef = useRef(0);
   const [currentPage, setCurrentPage] = useState(0);
+  const [isBookReady, setIsBookReady] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(true);
 
@@ -112,7 +171,13 @@ export function GuidebookReader({
     const host = hostRef.current;
     const mount = document.createElement("div");
     mount.className = "page-flip-mount";
+    const pages = Array.from({ length: PAGE_COUNT }, (_, index) =>
+      createInteractivePage(index),
+    );
+    bookPagesRef.current = pages;
+    mount.append(...pages);
     host.appendChild(mount);
+    warmPageWindow(pages, currentPageRef.current);
     let cancelled = false;
     let instance: PageFlip | null = null;
 
@@ -123,13 +188,13 @@ export function GuidebookReader({
       }
 
       instance = new PageFlipConstructor(mount, {
-        width: 455,
-        height: 643,
+        width: 600,
+        height: 848,
         size: "stretch",
         minWidth: 270,
-        maxWidth: 455,
+        maxWidth: 600,
         minHeight: 382,
-        maxHeight: 643,
+        maxHeight: 848,
         drawShadow: true,
         flippingTime: 850,
         usePortrait: true,
@@ -146,14 +211,28 @@ export function GuidebookReader({
         const page = Number(event.data);
         currentPageRef.current = page;
         setCurrentPage(page);
+        warmPageWindow(pages, page);
       });
-      instance.loadFromImages(PAGE_IMAGES);
+      instance.loadFromHTML(pages);
       pageFlipRef.current = instance;
+
+      const firstImage = pages[0].querySelector("img");
+      if (firstImage) {
+        void firstImage
+          .decode()
+          .catch(() => undefined)
+          .then(() => {
+            if (!cancelled) {
+              setIsBookReady(true);
+            }
+          });
+      }
     });
 
     return () => {
       cancelled = true;
       pageFlipRef.current = null;
+      bookPagesRef.current = [];
       if (instance) {
         instance.destroy();
       } else {
@@ -169,6 +248,7 @@ export function GuidebookReader({
       if (reduceMotion) {
         setCurrentPage(target);
       } else {
+        warmPageWindow(bookPagesRef.current, target);
         pageFlipRef.current?.turnToPage(target);
         setCurrentPage(target);
       }
@@ -263,7 +343,7 @@ export function GuidebookReader({
           {reduceMotion ? (
             <div className="static-book-page">
               <Image
-                src={PAGE_IMAGES[currentPage]}
+                src={ULTRA_PAGE_IMAGES[currentPage]}
                 alt={
                   title +
                   " " +
@@ -271,13 +351,33 @@ export function GuidebookReader({
                   " " +
                   String(currentPage + 1)
                 }
-                width={909}
-                height={1285}
+                width={2730}
+                height={3859}
                 sizes="(max-width: 720px) 92vw, 640px"
+                unoptimized
               />
             </div>
           ) : (
-            <div ref={hostRef} className="page-flip-host" aria-hidden="true" />
+            <>
+              <div
+                ref={hostRef}
+                className="page-flip-host"
+                aria-hidden="true"
+              />
+              {!isBookReady ? (
+                <div className="book-loading-preview" aria-hidden="true">
+                  <Image
+                    src={HD_PAGE_IMAGES[0]}
+                    alt=""
+                    width={1820}
+                    height={2572}
+                    sizes="(max-width: 720px) 92vw, 455px"
+                    priority
+                    unoptimized
+                  />
+                </div>
+              ) : null}
+            </>
           )}
         </div>
 
