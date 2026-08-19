@@ -1680,6 +1680,7 @@ figure {
 }
 
 .book-viewport {
+  position: relative;
   display: grid;
   width: 100%;
   min-height: 643px;
@@ -1695,6 +1696,7 @@ figure {
 .page-flip-host {
   display: grid;
   width: 100%;
+  grid-area: 1 / 1;
   place-items: center;
   filter: drop-shadow(0 14px 10px rgb(20 30 30 / 20%));
 }
@@ -1703,12 +1705,43 @@ figure {
   margin-inline: auto;
 }
 
-.page-flip-mount canvas {
-  background: transparent;
+.page-flip-mount .book-page {
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.page-flip-mount .book-page picture,
+.page-flip-mount .book-page img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.page-flip-mount .book-page img {
+  object-fit: fill;
+  pointer-events: none;
+  user-select: none;
+}
+
+.book-loading-preview {
+  width: min(600px, 100%);
+  overflow: hidden;
+  grid-area: 1 / 1;
+  pointer-events: none;
+  background: var(--surface-strong);
+  border: 1px solid rgb(30 40 40 / 18%);
+  box-shadow: 0 12px 24px rgb(20 30 30 / 20%);
+  z-index: 2;
+}
+
+.book-loading-preview img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 .static-book-page {
-  width: min(455px, 100%);
+  width: min(600px, 100%);
   overflow: hidden;
   background: var(--surface-strong);
   border: 1px solid rgb(30 40 40 / 18%);

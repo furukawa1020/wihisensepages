@@ -29,6 +29,7 @@ declare module "page-flip" {
       },
     );
     loadFromImages(images: string[]): void;
+    loadFromHTML(items: NodeListOf<HTMLElement> | HTMLElement[]): void;
     flipNext(): void;
     flipPrev(): void;
     turnToNextPage(): void;
