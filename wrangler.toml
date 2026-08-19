@@ -1,6 +1,11 @@
 name = "with-sense-homepage"
-compatibility_date = "2026-05-05"
-pages_build_output_dir = ".vercel/output/static"
+main = ".open-next/worker.js"
+compatibility_date = "2026-08-19"
+compatibility_flags = ["nodejs_compat"]
 
-[vars]
-NEXT_PUBLIC_SITE_NAME = "With Sense"
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
+
+[observability]
+enabled = true

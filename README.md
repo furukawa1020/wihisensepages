@@ -1,6 +1,6 @@
 # With Sense 公式サイト
 
-Next.js + Reactで構築したWith Senseのホームページです。団体提供資料と公式情報を基準に、活動内容や写真を掲載しています。
+金沢大学の学生を中心に活動するWith Senseの公式サイトです。Next.jsとReactで構築し、団体の活動、感覚の多様性、Sensory Book Loungeの情報を掲載しています。
 
 ## 開発
 
@@ -9,30 +9,30 @@ npm install
 npm run dev
 ```
 
-## Netlify仮デプロイ
+## Netlifyデプロイ
 
-Netlifyではこのリポジトリを接続し、`netlify.toml` の設定を使用します。
+今回の公開先はNetlifyです。Netlifyでこのリポジトリを接続し、`main`ブランチへの更新を自動デプロイします。
 
 - Build command: `npm run build`
 - Publish directory: `.next`
-- Plugin: `@netlify/plugin-nextjs`
+- Next.js adapter: Netlifyが提供する最新版のOpenNextアダプターを自動適用
 
-## Cloudflare Pages本番想定
+Netlify側で本番URLが決まったら、環境変数`NEXT_PUBLIC_SITE_URL`にそのURLを設定してください。canonical URL、OGP、サイトマップに反映されます。
 
-Next.jsのAPIルートも使う想定のため、Cloudflare Pagesでは `@cloudflare/next-on-pages` を使う構成にしています。
+## Cloudflare Workersへの将来移行
+
+将来Cloudflare Workersへ移行できるよう、`@opennextjs/cloudflare`の設定も保持しています。今回のデプロイには使用しません。
 
 ```bash
-npm run cloudflare:build
 npm run cloudflare:preview
+npm run cloudflare:deploy
 ```
-
-Cloudflare Pages側のBuild commandは `npm run cloudflare:build`、Build output directoryは `.vercel/output/static` を想定しています。
 
 ## バックエンド予定
 
-現在は以下のAPIルートを用意しています。
+現在は次のAPIルートを用意しています。
 
 - `GET /api/health`
 - `POST /api/contact`
 
-`/api/contact` は将来的にメール送信、DB保存、CRM連携などへ接続するための受け口です。
+`/api/contact`は、将来的にメール送信、DB保存、CRM連携などへ接続するための受け口です。
