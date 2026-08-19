@@ -1,6 +1,6 @@
-# 学生団体 With Sense 公式サイト
+# With Sense 公式サイト
 
-Next.js + Reactで構築したWith Senseのホームページです。配色・字体・内容は公式lit.linkを基準にしています。
+Next.js + Reactで構築したWith Senseのホームページです。団体提供資料と公式情報を基準に、活動内容や写真を掲載しています。
 
 ## 開発
 
