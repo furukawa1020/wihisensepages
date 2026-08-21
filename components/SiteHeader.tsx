@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { Languages, Menu, X } from "lucide-react";
 import { useState } from "react";
-import { AccessibilitySettings } from "@/components/AccessibilitySettings";
 import { getSiteContent, type Locale } from "@/data/site";
 
 type SiteHeaderProps = {
@@ -43,7 +42,6 @@ export function SiteHeader({ locale }: SiteHeaderProps) {
             <span aria-hidden="true">/</span>
             <a href={content.language.otherHref}>{content.language.other}</a>
           </div>
-          <AccessibilitySettings locale={locale} />
           <button
             className="menu-button"
             type="button"

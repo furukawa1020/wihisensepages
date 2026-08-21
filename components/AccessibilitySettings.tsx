@@ -1,11 +1,11 @@
 "use client";
 
 import {
-  Accessibility,
   Contrast,
   Eye,
   ImageOff,
   Link as LinkIcon,
+  PersonStanding,
   RotateCcw,
   X,
 } from "lucide-react";
@@ -250,7 +250,7 @@ export function AccessibilitySettings({ locale }: { locale: Locale }) {
         title={copy.open}
         onClick={openDialog}
       >
-        <Accessibility aria-hidden="true" size={25} strokeWidth={1.8} />
+        <PersonStanding aria-hidden="true" size={29} strokeWidth={1.8} />
       </button>
 
       <dialog
@@ -269,7 +269,7 @@ export function AccessibilitySettings({ locale }: { locale: Locale }) {
         <div className="accessibility-panel">
           <header className="accessibility-panel-header">
             <div>
-              <Accessibility aria-hidden="true" size={28} />
+              <PersonStanding aria-hidden="true" size={28} />
               <h2 id="accessibility-title">{copy.title}</h2>
             </div>
             <button

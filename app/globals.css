@@ -238,7 +238,6 @@ figure {
   text-underline-offset: 3px;
 }
 
-.accessibility-trigger,
 .menu-button,
 .icon-button {
   display: grid;
@@ -253,10 +252,30 @@ figure {
   color: var(--ink);
 }
 
-.accessibility-trigger:hover,
 .menu-button:hover,
 .icon-button:hover {
   background: var(--surface-strong);
+}
+
+.accessibility-trigger {
+  position: fixed;
+  z-index: 180;
+  right: max(24px, calc(env(safe-area-inset-right) + 16px));
+  bottom: max(24px, calc(env(safe-area-inset-bottom) + 16px));
+  display: grid;
+  width: 56px;
+  height: 56px;
+  cursor: pointer;
+  place-items: center;
+  border: 2px solid var(--bg);
+  border-radius: 50%;
+  background: var(--action-bg);
+  box-shadow: 0 2px 8px rgb(20 30 30 / 28%);
+  color: var(--action-ink);
+}
+
+.accessibility-trigger:hover {
+  background: var(--ink);
 }
 
 .menu-button {
@@ -1356,11 +1375,17 @@ figure {
     gap: 5px;
   }
 
-  .accessibility-trigger,
   .menu-button {
     width: 40px;
     height: 40px;
     flex-basis: 40px;
+  }
+
+  .accessibility-trigger {
+    right: max(16px, calc(env(safe-area-inset-right) + 12px));
+    bottom: max(16px, calc(env(safe-area-inset-bottom) + 12px));
+    width: 52px;
+    height: 52px;
   }
 
   .hero {

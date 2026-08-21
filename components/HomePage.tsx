@@ -10,6 +10,7 @@ import {
   Megaphone,
   Moon,
 } from "lucide-react";
+import { AccessibilitySettings } from "@/components/AccessibilitySettings";
 import { GuidebookReader } from "@/components/GuidebookReader";
 import { SectionHeading } from "@/components/SectionHeading";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -51,6 +52,7 @@ export function HomePage({ locale }: HomePageProps) {
       <a className="skip-link" href="#main-content">
         {content.skip}
       </a>
+      <AccessibilitySettings locale={locale} />
       <SiteHeader locale={locale} />
 
       <main id="main-content" tabIndex={-1}>
